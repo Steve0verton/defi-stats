@@ -21,21 +21,21 @@ browser.get("https://defillama.com/protocols/dexes/Ethereum")
 # Sleep
 time.sleep(3)
 
-# Load entire page through infinite scroll by triggering JS
-# TODO: current_last_elem CSS selector path seems very distinct and randomly generated, figure out how to make more dynamic and universal
-# NOTE: Ensure the "last-child" CSS selector function is used to dynamically find the end
-last_elem = ''
+# Get scroll height
+last_height = browser.execute_script("return document.body.scrollHeight")
+
 while True:
-    current_last_elem = "#center > div > div > div.Panel-sc-oefbp0-0.jqKcsO.css-vurnku > div > div.TokenList__List-sc-1a76325-0.JVran.css-1yh09yi > div > div > div:last-child"
-    scroll = "document.querySelector(\'" + current_last_elem + "\').scrollIntoView();"
-    browser.execute_script(scroll) # execute the js scroll
-    print("Last Element= " + last_elem)
-    print("Current Element=" + current_last_elem)
-    time.sleep(3) # wait for page to load new content
-    if (last_elem == current_last_elem):
-       break
-    else:
-       last_elem = current_last_elem 
+    # Scroll down to bottom
+    browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+    # Wait to load page
+    time.sleep(3)
+
+    # Calculate new scroll height and compare with last scroll height
+    new_height = browser.execute_script("return document.body.scrollHeight")
+    if new_height == last_height:
+        break
+    last_height = new_height
 
 # Debug output
 # with open('output.html', 'w') as f:
