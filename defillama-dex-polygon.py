@@ -16,21 +16,43 @@ webdriver_service = Service("/home/soverton/chromedriver/stable/chromedriver")
 browser = webdriver.Chrome(service=webdriver_service, options=chrome_options)
 
 # Get page
-browser.get("https://defillama.com/protocols/dexes/Polygon")
+browser.get("https://defillama.com/protocols/dexes/Ethereum")
 
 # Sleep
-time.sleep(5)
+time.sleep(3)
+
+# Load entire page through infinite scroll by triggering JS
+# TODO: current_last_elem CSS selector path seems very distinct and randomly generated, figure out how to make more dynamic and universal
+# NOTE: Ensure the "last-child" CSS selector function is used to dynamically find the end
+last_elem = ''
+while True:
+    current_last_elem = "#center > div > div > div.Panel-sc-oefbp0-0.jqKcsO.css-vurnku > div > div.TokenList__List-sc-1a76325-0.JVran.css-1yh09yi > div > div > div:last-child"
+    scroll = "document.querySelector(\'" + current_last_elem + "\').scrollIntoView();"
+    browser.execute_script(scroll) # execute the js scroll
+    print("Last Element= " + last_elem)
+    print("Current Element=" + current_last_elem)
+    time.sleep(3) # wait for page to load new content
+    if (last_elem == current_last_elem):
+       break
+    else:
+       last_elem = current_last_elem 
+
+# Debug output
+# with open('output.html', 'w') as f:
+#     f.write(browser.page_source)
 
 # Get number of rows in table
-rows = 1+len(browser.find_elements_by_xpath(
-    "/html/body/div/div/div/div[2]/div/div/div[3]/div/div[3]/div/div/div[1]"))
+rows = len(browser.find_elements(By.XPATH,
+    "/html/body/div/div/div/div[2]/div/div/div[3]/div/div[3]/div/div/div"))
   
-# Get number of columns in table
-cols = len(browser.find_elements_by_xpath(
-    "/html/body/div/div/div/div[2]/div/div/div[3]/div/div[3]/div/div/div[1]/div[1]/div[3]"))
+# Print rows 
+print("Rows to scrape: " + str(rows))
 
-# Print rows and columns
-print("Rows: " + str(rows))
-print("Columns: " + str(cols))
+# for r in range(2, rows+1):
+#     for p in range(1, 6):
+#         value = driver.find_element_by_xpath(
+#             "/html/body/div[3]/div[2]/div/div[1]/div/div/div/article/div[3]/div/table/tbody/tr["+str(r)+"]/td["+str(p)+"]").text
+#         print(value, end='       ')
+#     print()
 
 browser.quit()
