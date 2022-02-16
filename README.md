@@ -11,7 +11,7 @@ Programs are organized into the following directory structure:
 
 ## Prerequisites
 
-Use of these tools require working knowledge of [Python](https://www.python.org/).  The following packages are required for programs written within this repository.
+Use of these tools require working knowledge of [Python](https://www.python.org/).  The following packages are required for python programs written within this repository.
 
 ```bash
 pip install beautifulsoup selenium bs4 lxml pandas
