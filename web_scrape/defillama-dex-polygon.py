@@ -10,7 +10,7 @@ chrome_options.add_argument("--headless") # Ensure GUI is off
 chrome_options.add_argument("--no-sandbox")
 
 # Set path to chromedriver as per your configuration
-webdriver_service = Service("/home/soverton/chromedriver/stable/chromedriver")
+webdriver_service = Service("/usr/local/bin/chromedriver")
 
 # Choose Chrome Browser
 browser = webdriver.Chrome(service=webdriver_service, options=chrome_options)
@@ -19,7 +19,7 @@ browser = webdriver.Chrome(service=webdriver_service, options=chrome_options)
 browser.get("https://defillama.com/protocols/dexes/Ethereum")
 
 # Sleep
-time.sleep(3)
+time.sleep(1)
 
 # Get scroll height
 last_height = browser.execute_script("return document.body.scrollHeight")
@@ -29,7 +29,7 @@ while True:
     browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
     # Wait to load page
-    time.sleep(3)
+    time.sleep(2)
 
     # Calculate new scroll height and compare with last scroll height
     new_height = browser.execute_script("return document.body.scrollHeight")
@@ -38,16 +38,17 @@ while True:
     last_height = new_height
 
 # Debug output
-# with open('output.html', 'w') as f:
-#     f.write(browser.page_source)
+with open('output.html', 'w') as f:
+    f.write(browser.page_source)
 
 # Get number of rows in table
 rows = len(browser.find_elements(By.XPATH,
-    "/html/body/div/div/div/div[2]/div/div/div[3]/div/div[3]/div/div/div"))
-  
+    "/html/body/div[1]/div/main/section/div/div/table/tbody/tr[1]"))
+
 # Print rows 
 print("Rows to scrape: " + str(rows))
 
+# Print output to screen
 # for r in range(2, rows+1):
 #     for p in range(1, 6):
 #         value = driver.find_element_by_xpath(
