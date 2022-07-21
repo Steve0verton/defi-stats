@@ -1,6 +1,6 @@
 # Defi Statistics
 
-Python tools to scrape and aggregate defi statistics.
+Python tools to scrape and aggregate defi statistics.  **Work in progress**
 
 ## Project Directory Structure
 
@@ -19,10 +19,18 @@ Install Python dependencies
 pip install beautifulsoup4 selenium bs4 lxml pandas
 ```
 
-Install ChrmoeDriver
+Install ChromeDriver
 ```bash
 brew install chromedriver
 ```
+
+
+## Getting Started
+
+Execute the [defillama-protocols.py](./api/defillama-protocols.py) program to query the DefiLlama API for relevant statistics.
+
+Work in progress...
+
 
 ## Reference
 
